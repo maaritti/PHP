@@ -1,0 +1,131 @@
+<html>
+<head>
+<title>Harjoitus 19</title>
+
+</head>
+
+<body>
+    <h1>Täytä tiedot</h1>
+
+    <form action="harjoitus_19.php" method="get">
+        Etunimi:<br>
+        <input type="text" name="etunimi" value="<?php
+if (isset($_GET['etunimi'])) {
+    echo htmlentities($_GET['etunimi']);
+}
+?>" />
+        <br>
+        Sukunimi:<br>
+        <input type="text" name="sukunimi" value="<?php
+if (isset($_GET['sukunimi'])) {
+    echo htmlentities($_GET['sukunimi']);
+}
+?>" /> 
+        <br>
+        Ikä:<br>
+        <input type="text" name="ikä" value="<?php
+if (isset($_GET['ikä'])) {
+    echo htmlentities($_GET['ikä']);
+}
+?>" /> 
+        <br>
+        Postinumero:<br>
+        <input type="text" name="postnum" value="<?php
+if (isset($_GET['postnum'])) {
+    echo htmlentities($_GET['postnum']);
+}
+?>" />
+        <br><br>
+        <input type="hidden" value="true" name="submitted" />
+         <input type="submit" name="submit" value="Save" /> 
+    </form>
+    
+<?php
+
+if (isset($_GET['submit'])) {
+    $nimi     = $_GET["etunimi"];
+    $snimi    = $_GET["sukunimi"];
+    $age      = $_GET["ikä"];
+    $postnum  = $_GET["postnum"];
+    $vaadittu = array(
+        'etunimi',
+        'sukunimi',
+        'ikä',
+        'postnum'
+    );
+    
+    if (!empty($_GET['submitted']) && $_GET['submitted'] == "true") {
+        
+        if (empty($_GET['etunimi'])) {
+            echo "<font color='red'>Syötä etunimi</font><br />";
+        } else {
+            $etunimi = $_GET['etunimi'];
+        }
+        
+        if (empty($_GET['sukunimi'])) {
+            echo "<font color='red'>Syötä sukunimi!</font><br />";
+        } else {
+            $sukunimi = $_GET['sukunimi'];
+        }
+        
+        if (empty($_GET['ikä'])) {
+            echo "<font color='red'>Syötä ikä!</font><br />";
+        } elseif ($_GET['ikä'] <= 1 || $_GET['ikä'] >= 100) {
+            echo "<font color='red'> Ikä ei täsmää!</font><br />";
+            
+        } else {
+            
+            $age = $_GET['ikä'];
+            
+        }
+        if (empty($_GET['postnum'])) {
+            
+            echo "<font color='red'>Syötä postinumero!</font><br />";
+            
+        } elseif (strlen($_GET['postnum']) < 5 || strlen($_GET['postnum']) > 5) {
+            echo "<font color='red'> Postinumero ei kelpaa!</font><br />";
+            
+        } else {
+            $postnum = $_GET['postnum'];
+            
+        }
+        
+    }
+    $error = false;
+    
+    foreach ($vaadittu as $field) {
+        if (empty($_GET[$field])) {
+            $error = true;
+        }
+    }
+    
+    if ($error) {
+        echo "Kaikki kentät ovat vaadittu!";
+    } else {
+        echo "
+        <div style='position: absolute; bottom: 0;'>
+        <table border='1' align='bottom'>
+        <tr>
+        <th>Etunimi</th>
+        <th>Sukunimi</th>
+        <th>Ikä</th>
+        <th>Postinumero</th>
+        </tr>
+        <tr>
+        <td>$etunimi</td>
+        <td>$sukunimi</td>
+        <td>$age</td>
+        <td>$postnum</td>
+        </tr>
+        </table>
+        </div>";
+        
+    }
+    
+    
+}
+
+?>
+
+</body>
+</html>
